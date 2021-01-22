@@ -3,14 +3,16 @@ package main
 import (
 	"encoding/csv"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
+	"math/rand"
+	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
-var dataFile string = "portades.csv"
+var dataFile string = "./portades.csv"
 
 type Portada struct {
 	Id       int    `json:"id"`
@@ -21,7 +23,38 @@ type Portada struct {
 }
 
 func main() {
-	data := extractData()
+	server()
+}
+
+func server() {
+	handlers := newHandlers()
+	http.HandleFunc("/random", handlers.get)
+
+	err := http.ListenAndServe(":8000", nil)
+	if err != nil {
+		panic(err)
+	}
+}
+
+type handlers struct {
+	store map[int]Portada
+}
+
+func newHandlers() *handlers {
+	return &handlers{
+		store: extractData(),
+	}
+}
+
+func (h *handlers) get(w http.ResponseWriter, r *http.Request) {
+	rand.Seed(time.Now().UnixNano())
+	portada := h.store[rand.Intn(len(h.store))]
+
+	jsonBytes, err := json.Marshal(portada)
+	if err != nil {
+		w.Write([]byte(err.Error()))
+	}
+	w.Write(jsonBytes)
 }
 
 func extractData() map[int]Portada {
@@ -58,7 +91,5 @@ func extractData() map[int]Portada {
 		}
 	}
 
-	portadesJson, _ := json.Marshal(portades)
-	fmt.Println(string(portadesJson))
 	return portades
 }
