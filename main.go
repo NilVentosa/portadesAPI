@@ -8,6 +8,8 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"path"
+	"runtime"
 	"strconv"
 	"time"
 )
@@ -58,7 +60,10 @@ func (h *handlers) get(w http.ResponseWriter, r *http.Request) {
 }
 
 func extractData() map[int]Portada {
-	csvFile, _ := os.Open(dataFile)
+	_, currentFileName, _, _ := runtime.Caller(0)
+	filePath := path.Dir(currentFileName)
+
+	csvFile, _ := os.Open(filePath + "/" + dataFile)
 	reader := csv.NewReader(csvFile)
 
 	var portades map[int]Portada
