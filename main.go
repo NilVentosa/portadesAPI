@@ -17,11 +17,12 @@ import (
 var dataFile string = "./portades.csv"
 
 type Portada struct {
-	Id       int    `json:"id"`
-	Intro    string `json:"intro"`
-	Headline string `json:"headline"`
-	Result   bool   `json:"result"`
-	Image    string `json:"image"`
+	Id        int    `json:"id"`
+	Intro     string `json:"intro"`
+	Newspaper string `json:"newspaper"`
+	Headline  string `json:"headline"`
+	Result    bool   `json:"result"`
+	Image     string `json:"image"`
 }
 
 func main() {
@@ -29,8 +30,8 @@ func main() {
 }
 
 func server() {
-	handlers := newHandlers()
-	http.HandleFunc("/random", handlers.get)
+	randomHandlers := newRandomHandlers()
+	http.HandleFunc("/random", randomHandlers.get)
 
 	err := http.ListenAndServe(":8000", nil)
 	if err != nil {
@@ -38,25 +39,31 @@ func server() {
 	}
 }
 
-type handlers struct {
+type randomHandlers struct {
 	store map[int]Portada
 }
 
-func newHandlers() *handlers {
-	return &handlers{
+func newRandomHandlers() *randomHandlers {
+	return &randomHandlers{
 		store: extractData(),
 	}
 }
 
-func (h *handlers) get(w http.ResponseWriter, r *http.Request) {
+func (h *randomHandlers) get(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().UnixNano())
 	portada := h.store[rand.Intn(len(h.store))]
 
 	jsonBytes, err := json.Marshal(portada)
 	if err != nil {
+		log.Fatal(err.Error())
 		w.Write([]byte(err.Error()))
 	}
+
+	w.Header().Add("content-type", "application/json")
+	//w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(200)
 	w.Write(jsonBytes)
+	log.Println("Random portada served.")
 }
 
 func extractData() map[int]Portada {
@@ -82,17 +89,18 @@ func extractData() map[int]Portada {
 			log.Fatal(error)
 		}
 
-		result, err := strconv.ParseBool(line[3])
+		result, err := strconv.ParseBool(line[4])
 		if err != nil {
 			log.Fatal(error)
 		}
 
 		portades[id] = Portada{
-			Id:       id,
-			Intro:    line[1],
-			Headline: line[2],
-			Result:   result,
-			Image:    line[4],
+			Id:        id,
+			Intro:     line[1],
+			Headline:  line[3],
+			Newspaper: line[2],
+			Result:    result,
+			Image:     line[5],
 		}
 	}
 
