@@ -22,7 +22,7 @@ type Portada struct {
 	Newspaper string `json:"newspaper"`
 	Headline  string `json:"headline"`
 	Result    bool   `json:"result"`
-	Image     string `json:"image"`
+	Video     string `json:"video"`
 }
 
 func main() {
@@ -60,7 +60,6 @@ func (h *randomHandlers) get(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Add("content-type", "application/json")
-	//w.Header().Add("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(200)
 	w.Write(jsonBytes)
 	log.Println("Random portada served.")
@@ -100,7 +99,7 @@ func extractData() map[int]Portada {
 			Headline:  line[3],
 			Newspaper: line[2],
 			Result:    result,
-			Image:     line[5],
+			Video:     line[5],
 		}
 	}
 
