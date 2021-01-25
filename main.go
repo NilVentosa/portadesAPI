@@ -23,6 +23,7 @@ type Portada struct {
 	Headline  string `json:"headline"`
 	Result    bool   `json:"result"`
 	Video     string `json:"video"`
+	Episode   string `json:"episode"`
 }
 
 func main() {
@@ -100,6 +101,7 @@ func extractData() map[int]Portada {
 			Newspaper: line[2],
 			Result:    result,
 			Video:     line[5],
+			Episode:   line[6],
 		}
 	}
 
