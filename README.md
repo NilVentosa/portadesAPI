@@ -9,3 +9,4 @@ This started as a way to learn how to do a basic API with GO. It is used by [El 
 + [ ] `GET /portada?id={id}` returns specific Portada
 + [ ] Result is hashed
 + [ ] Add some kind of authentification
++ [ ] `POST /portada?{...}`Adds a new Portada
