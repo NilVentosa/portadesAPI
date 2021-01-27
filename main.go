@@ -72,6 +72,7 @@ func (h *handlers) getPortada(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		w.WriteHeader(http.StatusNotFound)
 		log.Printf("Portada with id: %v not found.\n", portadaId)
+		return
 	}
 
 	jsonBytes, err := json.Marshal(portada)
