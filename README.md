@@ -5,8 +5,8 @@ This started as a way to learn how to do a basic API with GO. It is used by [El 
 ### Endpoints
 
 + [x] `GET /random`returns a random Portada
-+ [ ] `GET /result?id={id}`returns the result of the specified Portada
-+ [ ] `GET /portada?id={id}` returns specific Portada
++ [ ] `GET /result/id`returns the result of the specified Portada
++ [x] `GET /portada/id` returns specific Portada
 + [ ] `POST /portada?{...}`Adds a new Portada
 
 ### TODO
