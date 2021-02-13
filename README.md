@@ -13,3 +13,4 @@ This started as a way to learn how to do a basic API with GO. It is used by [El 
 
 + [ ] Result is hashed
 + [ ] Add some kind of authentification
++ [x] Use Sqlite db instead of csv file
