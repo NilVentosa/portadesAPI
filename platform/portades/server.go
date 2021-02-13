@@ -12,8 +12,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func Server() {
-	handlers := newHandlers()
+func Server(dbLocation string) {
+	handlers := newHandlers(dbLocation)
 	http.HandleFunc("/random", handlers.getRandom)
 	http.HandleFunc("/portada/", handlers.getPortada)
 
@@ -28,8 +28,8 @@ type handlers struct {
 	data *Data
 }
 
-func newHandlers() *handlers {
-	db, err := sql.Open("sqlite3", "portades.db")
+func newHandlers(dbLocation string) *handlers {
+	db, err := sql.Open("sqlite3", dbLocation)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

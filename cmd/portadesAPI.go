@@ -1,7 +1,10 @@
 package main
 
-import "portadesAPI/platform/portades"
+import (
+	"os"
+	"portadesAPI/platform/portades"
+)
 
 func main() {
-	portades.Server()
+	portades.Server(os.Args[1])
 }
