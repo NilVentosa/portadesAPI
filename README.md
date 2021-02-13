@@ -2,6 +2,12 @@
 
 This started as a way to learn how to do a basic API with GO. It is used by [El joc de les portades](https://eljocdelesportades.xyz).
 
+### How to run
+To run the API execute the following commands:
+
+    go build cmd/portadesAPI.go
+    ./portadesAPI portades.db
+
 ### Endpoints
 
 + [x] `GET /random`returns a random Portada
